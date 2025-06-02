@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RestauranteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         try {
@@ -19,9 +17,6 @@ class RestauranteController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -30,34 +25,32 @@ class RestauranteController extends Controller
             'img'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'precioMedio'  => 'required|string|max:255',
             'descripcion'  => 'required|string|max:255',
-            'localidad' => 'required|string|max:255',
-            'ubicacion' => 'required|string|max:255'
+            'localidad'    => 'required|string|max:255',
+            'ubicacion'    => 'required|string|max:255'
         ]);
 
-        $restaurante = Restaurante::create($validated);
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $rutaImagen = $request->file('img')->store('img/restaurantes', 'public');
-            $restaurante->img = $rutaImagen;
-            $restaurante->save();
+            $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
+            $request->file('img')->move(public_path('uploads/img/restaurantes'), $filename);
+            $validated['img'] = 'uploads/img/restaurantes/' . $filename;
         }
+
+        $restaurante = Restaurante::create($validated);
+
         return response()->json([
             'message' => 'Restaurante creado con éxito',
             'data' => $restaurante
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($localidad)
     {
-
         try {
             $restaurantes = Restaurante::where('localidad', $localidad)->get();
 
             $restaurantes->transform(function ($restaurante) {
                 if ($restaurante->img) {
-                    $restaurante->img = asset('storage/' . $restaurante->img);
+                    $restaurante->img = asset($restaurante->img);
                 }
                 return $restaurante;
             });
@@ -75,7 +68,7 @@ class RestauranteController extends Controller
 
             $restaurantes->transform(function ($restaurante) {
                 if ($restaurante->img) {
-                    $restaurante->img = asset('storage/' . $restaurante->img);
+                    $restaurante->img = asset($restaurante->img);
                 }
                 return $restaurante;
             });
@@ -86,10 +79,6 @@ class RestauranteController extends Controller
         }
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $restaurante = Restaurante::findOrFail($id);
@@ -102,9 +91,10 @@ class RestauranteController extends Controller
             'localidad'     => 'required|string|max:255',
         ]);
 
-         if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $rutaImagen = $request->file('img')->store('img/restaurantes', 'public');
-            $validated['img'] = $rutaImagen;
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
+            $request->file('img')->move(public_path('uploads/img/restaurantes'), $filename);
+            $validated['img'] = 'uploads/img/restaurantes/' . $filename;
         } else {
             $validated['img'] = $restaurante->img;
         }
@@ -117,10 +107,6 @@ class RestauranteController extends Controller
         ]);
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Restaurante $restaurante)
     {
         //

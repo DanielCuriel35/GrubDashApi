@@ -5,18 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index($id_restaurante)
     {
         $productos = Producto::where('restaurante_id', $id_restaurante)->get();
 
         $productos->transform(function ($producto) {
-            $producto->img = asset('storage/' . $producto->img);
+            $producto->img = asset('uploads/img/productos/' . basename($producto->img));
             return $producto;
         });
 
@@ -27,9 +25,6 @@ class ProductoController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -46,16 +41,14 @@ class ProductoController extends Controller
         $ingredientes = $validated['ingredientes'];
         unset($validated['ingredientes']);
 
+        if ($request->hasFile('img') && $request->file('img')->isValid()) {
+            $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
+            $request->file('img')->move(public_path('uploads/img/productos'), $filename);
+            $validated['img'] = 'uploads/img/productos/' . $filename;
+        }
 
         $producto = Producto::create($validated);
 
-        if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $rutaImagen = $request->file('img')->store('img/productos', 'public');
-            $producto->img = $rutaImagen;
-            $producto->save();
-        }
-
-        // Insertar relación con ingredientes
         foreach ($ingredientes as $ingrediente_id) {
             DB::table('ingrediente_productos')->insert([
                 'producto_id'    => $producto->id,
@@ -63,13 +56,12 @@ class ProductoController extends Controller
             ]);
         }
 
-        // Devolver respuesta con URL pública para la imagen
         return response()->json([
             'message' => 'Producto creado con éxito',
             'data' => [
                 'id'                => $producto->id,
                 'nombreProducto'    => $producto->nombreProducto,
-                'img'               => asset('storage/' . $producto->img),
+                'img'               => asset($producto->img),
                 'precio'            => $producto->precio,
                 'tiempoPreparacion' => $producto->tiempoPreparacion,
                 'descripcion'       => $producto->descripcion,
@@ -78,21 +70,13 @@ class ProductoController extends Controller
         ], 201);
     }
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show($id_producto)
     {
-
         $producto = Producto::with('ingredientes')->findOrFail($id_producto);
-        $producto->img = asset('storage/' . $producto->img);
+        $producto->img = asset('uploads/img/productos/' . basename($producto->img));
         return response()->json($producto);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $producto = Producto::findOrFail($id);
@@ -106,8 +90,9 @@ class ProductoController extends Controller
         ]);
 
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $rutaImagen = $request->file('img')->store('img/productos', 'public');
-            $validated['img'] = $rutaImagen;
+            $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
+            $request->file('img')->move(public_path('uploads/img/productos'), $filename);
+            $validated['img'] = 'uploads/img/productos/' . $filename;
         } else {
             $validated['img'] = $producto->img;
         }
@@ -119,7 +104,7 @@ class ProductoController extends Controller
             'data'    => [
                 'id'                => $producto->id,
                 'nombreProducto'    => $producto->nombreProducto,
-                'img'               => asset('storage/' . $producto->img),
+                'img'               => asset($producto->img),
                 'precio'            => $producto->precio,
                 'tiempoPreparacion' => $producto->tiempoPreparacion,
                 'descripcion'       => $producto->descripcion,
@@ -128,13 +113,6 @@ class ProductoController extends Controller
         ]);
     }
 
-
-
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $producto = Producto::find($id);
