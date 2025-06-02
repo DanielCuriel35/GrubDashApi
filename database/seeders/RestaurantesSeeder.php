@@ -17,7 +17,7 @@ class RestaurantesSeeder extends Seeder
             [
                 'usuario_id'   => 1,
                 'nombreLocal'  => 'La Parrilla de Don Julio',
-                'img'          => 'uploads/img/restaurantes/restaurante1.jpeg',
+                'img'          => 'upload/img/restaurantes/restaurante1.jpeg',
                 'precioMedio'  => '12€-20€',
                 'descripcion'  => 'Especialidad en carnes argentinas a la parrilla.',
                 'localidad'    => 'Navalmoral de la mata',
@@ -28,7 +28,7 @@ class RestaurantesSeeder extends Seeder
             [
                 'usuario_id'   => 2,
                 'nombreLocal'  => 'Mar y Tierra',
-                'img'          => 'uploads/img/restaurantes/restaurante2.jpeg',
+                'img'          => 'upload/img/restaurantes/restaurante2.jpeg',
                 'precioMedio'  => '10€-15€',
                 'descripcion'  => 'Pescados y mariscos frescos con vista al río.',
                 'localidad'    => 'Navalmoral de la mata',
@@ -39,7 +39,7 @@ class RestaurantesSeeder extends Seeder
             [
                 'usuario_id'   => 3,
                 'nombreLocal'  => 'Veggie Vibes',
-                'img'          => 'uploads/img/restaurantes/restaurante3.jpeg',
+                'img'          => 'upload/img/restaurantes/restaurante3.jpeg',
                 'precioMedio'  => '8€-14€',
                 'descripcion'  => 'Restaurante 100% vegano con opciones sin gluten.',
                 'localidad'    => 'Navalmoral de la mata',
@@ -50,7 +50,7 @@ class RestaurantesSeeder extends Seeder
             [
                 'usuario_id'   => 4,
                 'nombreLocal'  => 'Pasta e Basta',
-                'img'          => 'uploads/img/restaurantes/restaurante4.jpeg',
+                'img'          => 'upload/img/restaurantes/restaurante4.jpeg',
                 'precioMedio'  => '20€-30€',
                 'descripcion'  => 'Cocina italiana artesanal, pastas caseras.',
                 'localidad'    => 'Navalmoral de la mata',
@@ -61,7 +61,7 @@ class RestaurantesSeeder extends Seeder
             [
                 'usuario_id'   => 5,
                 'nombreLocal'  => 'Sushi Urban',
-                'img'          => 'uploads/img/restaurantes/restaurante5.jpeg',
+                'img'          => 'upload/img/restaurantes/restaurante5.jpeg',
                 'precioMedio'  => '40€-50€',
                 'descripcion'  => 'Fusión japonesa con ingredientes locales.',
                 'localidad'    => 'Navalmoral de la mata',
