@@ -203,7 +203,7 @@ class PedidoController extends Controller
                     'nombre' => $producto->nombreProducto,
                     'cantidad' => $producto->pivot->cantidad,
                     'precio_unitario' => $producto->pivot->precio_unitario,
-                    'img' => asset('storage/' . $producto->img),
+                    'img' => asset($producto->img),
                 ];
             }),
         ];
