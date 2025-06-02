@@ -36,7 +36,7 @@ class RestauranteController extends Controller
 
         $restaurante = Restaurante::create($validated);
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $rutaImagen = $request->file('img')->store('img/productos', 'public');
+            $rutaImagen = $request->file('img')->store('img/restaurantes', 'public');
             $restaurante->img = $rutaImagen;
             $restaurante->save();
         }
@@ -103,7 +103,7 @@ class RestauranteController extends Controller
         ]);
 
          if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $rutaImagen = $request->file('img')->store('img/productos', 'public');
+            $rutaImagen = $request->file('img')->store('img/restaurantes', 'public');
             $validated['img'] = $rutaImagen;
         } else {
             $validated['img'] = $restaurante->img;
