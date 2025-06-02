@@ -13,6 +13,7 @@ class IngredientesProductosSeeder extends Seeder
      */
     public function run(): void
     {
+
         $data = [
             ['producto_id' => 1, 'ingrediente_id' => 1],
             ['producto_id' => 1, 'ingrediente_id' => 2],
@@ -74,5 +75,6 @@ class IngredientesProductosSeeder extends Seeder
             ['producto_id' => 20, 'ingrediente_id' => 39],
             ['producto_id' => 20, 'ingrediente_id' => 40],
         ];
+        DB::table('ingrediente_productos')->insert($data);
     }
 }

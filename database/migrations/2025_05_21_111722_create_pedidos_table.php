@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('usuario_id');
             $table->timestamp('fecha_pedido')->useCurrent();
-            $table->string('estado')->default('pendiente');
+            $table->string('estado')->default('En proceso');
             $table->timestamps();
 
             $table->foreign('usuario_id')->references('id')->on('usuarios')->onDelete('cascade');
