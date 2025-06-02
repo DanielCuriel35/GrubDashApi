@@ -46,8 +46,8 @@ class RestauranteController extends Controller
     public function show($localidad)
     {
         try {
-            $restaurantes = Restaurante::where('localidad', $localidad)->get();
-
+            $restaurantes = Restaurante::whereRaw('LOWER(localidad) = ?', [strtolower($localidad)])->get();
+            
             $restaurantes->transform(function ($restaurante) {
                 if ($restaurante->img) {
                     $restaurante->img = asset($restaurante->img);
