@@ -31,8 +31,8 @@ class RestauranteController extends Controller
 
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
             $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
-            $request->file('img')->move(public_path('uploads/img/restaurantes'), $filename);
-            $validated['img'] = 'uploads/img/restaurantes/' . $filename;
+            $request->file('img')->move(public_path('upload/img/restaurantes'), $filename);
+            $validated['img'] = 'upload/img/restaurantes/' . $filename;
         }
 
         $restaurante = Restaurante::create($validated);
@@ -93,8 +93,8 @@ class RestauranteController extends Controller
 
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
             $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
-            $request->file('img')->move(public_path('uploads/img/restaurantes'), $filename);
-            $validated['img'] = 'uploads/img/restaurantes/' . $filename;
+            $request->file('img')->move(public_path('upload/img/restaurantes'), $filename);
+            $validated['img'] = 'upload/img/restaurantes/' . $filename;
         } else {
             $validated['img'] = $restaurante->img;
         }

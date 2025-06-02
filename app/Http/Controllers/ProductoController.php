@@ -14,7 +14,7 @@ class ProductoController extends Controller
         $productos = Producto::where('restaurante_id', $id_restaurante)->get();
 
         $productos->transform(function ($producto) {
-            $producto->img = asset('uploads/img/productos/' . basename($producto->img));
+            $producto->img = asset('upload/img/productos/' . basename($producto->img));
             return $producto;
         });
 
@@ -43,8 +43,8 @@ class ProductoController extends Controller
 
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
             $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
-            $request->file('img')->move(public_path('uploads/img/productos'), $filename);
-            $validated['img'] = 'uploads/img/productos/' . $filename;
+            $request->file('img')->move(public_path('upload/img/productos'), $filename);
+            $validated['img'] = 'upload/img/productos/' . $filename;
         }
 
         $producto = Producto::create($validated);
@@ -73,7 +73,7 @@ class ProductoController extends Controller
     public function show($id_producto)
     {
         $producto = Producto::with('ingredientes')->findOrFail($id_producto);
-        $producto->img = asset('uploads/img/productos/' . basename($producto->img));
+        $producto->img = asset('upload/img/productos/' . basename($producto->img));
         return response()->json($producto);
     }
 
@@ -91,8 +91,8 @@ class ProductoController extends Controller
 
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
             $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
-            $request->file('img')->move(public_path('uploads/img/productos'), $filename);
-            $validated['img'] = 'uploads/img/productos/' . $filename;
+            $request->file('img')->move(public_path('upload/img/productos'), $filename);
+            $validated['img'] = 'upload/img/productos/' . $filename;
         } else {
             $validated['img'] = $producto->img;
         }
