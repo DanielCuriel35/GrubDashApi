@@ -64,10 +64,7 @@ class UsuarioController extends Controller
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
-        if ($user->restaurante) {
-            $user->load('restaurantes');
-        }
-
+        $user->load('restaurantes');
         $userData = $user->toArray();
 
         return response()->json([
