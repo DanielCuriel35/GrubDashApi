@@ -13,7 +13,8 @@ class Restaurante extends Model
         'precioMedio',
         'descripcion',
         'localidad',
-        'ubicacion'
+        'ubicacion',
+        'tipoRest'
     ];
     public function usuario()
     {

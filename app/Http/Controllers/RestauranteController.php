@@ -41,7 +41,7 @@ class RestauranteController extends Controller
         }
     }
 
-    //Función que muestra el restaurnate de un usuario atraves de su id
+    //Función que muestra el restaurante de un usuario atraves de su id
     public function restUsuario($idUsuario)
     {
         try {
