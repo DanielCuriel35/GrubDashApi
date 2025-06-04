@@ -39,6 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('pedido', [PedidoController::class, 'aniadirProducto']);
     Route::post('/pedidoP', [PedidoController::class, 'pasarAPendiente']);
 
-    Route::post('/crearSesionCheckout', [StripeController::class, 'crearSesionCheckout']);
+    Route::post('/crearSesionPasarela', [StripeController::class, 'crearSesionPasarela']);
 });
 

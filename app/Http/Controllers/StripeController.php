@@ -8,7 +8,7 @@ use Stripe\Checkout\Session;
 
 class StripeController extends Controller
 {
-    public function crearSesionCheckout(Request $request)
+    public function crearSesionPasarela(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
