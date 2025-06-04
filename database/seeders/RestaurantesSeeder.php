@@ -74,7 +74,7 @@ class RestaurantesSeeder extends Seeder
 
         foreach ($restaurantes as &$restaurante) {
             $uploaded = $cloudinary->uploadApi()->upload($restaurante['img_local'], [
-                'folder' => 'restaurantes',
+                'folder' => 'restaurantes_seeders',
             ]);
 
             $restaurante['img'] = $uploaded['secure_url'];
