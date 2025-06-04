@@ -4,6 +4,7 @@ use App\Http\Controllers\IngredienteController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\RestauranteController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,5 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('pedidosE', [PedidoController::class, 'eliminarProducto']);
     Route::post('pedido', [PedidoController::class, 'aniadirProducto']);
     Route::post('/pedidoP', [PedidoController::class, 'pasarAPendiente']);
+
+    Route::post('/crearSesionCheckout', [StripeController::class, 'crearSesionCheckout']);
 });
 
