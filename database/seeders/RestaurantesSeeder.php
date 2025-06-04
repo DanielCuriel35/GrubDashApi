@@ -32,8 +32,10 @@ class RestaurantesSeeder extends Seeder
                 'precioMedio' => '12€-20€',
                 'descripcion' => 'Especialidad en carnes argentinas a la parrilla.',
                 'localidad'   => 'Navalmoral de la mata',
-                'ubicacion'   => 'Guatemala 4699, Palermo',
+                'ubicacion'   => 'C. Tirso Molina, 20-6',
+                'tipoRest'    => 'Carne',
             ],
+
             [
                 'usuario_id'  => 2,
                 'nombreLocal' => 'Mar y Tierra',
@@ -41,7 +43,8 @@ class RestaurantesSeeder extends Seeder
                 'precioMedio' => '10€-15€',
                 'descripcion' => 'Pescados y mariscos frescos con vista al río.',
                 'localidad'   => 'Navalmoral de la mata',
-                'ubicacion'   => 'Av. Costanera 1220',
+                'ubicacion'   => 'C. Garganta de Cuartos, 1',
+                'tipoRest'    => 'Pescado',
             ],
             [
                 'usuario_id'  => 3,
@@ -50,7 +53,8 @@ class RestaurantesSeeder extends Seeder
                 'precioMedio' => '8€-14€',
                 'descripcion' => 'Restaurante 100% vegano con opciones sin gluten.',
                 'localidad'   => 'Navalmoral de la mata',
-                'ubicacion'   => 'Belgrano 230',
+                'ubicacion'   => 'C. Góngora, 1',
+                'tipoRest'    => 'Vegano',
             ],
             [
                 'usuario_id'  => 4,
@@ -59,7 +63,8 @@ class RestaurantesSeeder extends Seeder
                 'precioMedio' => '20€-30€',
                 'descripcion' => 'Cocina italiana artesanal, pastas caseras.',
                 'localidad'   => 'Navalmoral de la mata',
-                'ubicacion'   => 'San Martín 145',
+                'ubicacion'   => 'C. Madreselva, 12',
+                'tipoRest'    => 'Pasta',
             ],
             [
                 'usuario_id'  => 5,
@@ -68,7 +73,8 @@ class RestaurantesSeeder extends Seeder
                 'precioMedio' => '40€-50€',
                 'descripcion' => 'Fusión japonesa con ingredientes locales.',
                 'localidad'   => 'Navalmoral de la mata',
-                'ubicacion'   => 'Av. Del Bicentenario 567',
+                'ubicacion'   => 'P.º de los Mártires, 9',
+                'tipoRest'    => 'Pescado',
             ],
         ];
 

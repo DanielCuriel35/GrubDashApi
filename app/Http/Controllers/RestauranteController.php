@@ -19,6 +19,7 @@ class RestauranteController extends Controller
             'descripcion'  => 'required|string|max:255',
             'localidad'    => 'required|string|max:255',
             'ubicacion'    => 'required|string|max:255',
+            'tipoRest'      => 'required|in:Carne,Pescado,Mixto,Vegano',
         ]);
 
         $restaurante = Restaurante::create($validated);
@@ -62,6 +63,7 @@ class RestauranteController extends Controller
             'precioMedio'   => 'required|string|max:255',
             'descripcion'   => 'required|string|max:500',
             'localidad'     => 'required|string|max:255',
+            'tipoRest'      => 'required|in:Carne,Pescado,Mixto,Vegano',
         ]);
         $restaurante->update($validated);
         return response()->json([

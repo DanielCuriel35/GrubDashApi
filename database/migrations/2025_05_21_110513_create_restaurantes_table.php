@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('img');
             $table->string('precioMedio');
             $table->string('descripcion');
+            $table->enum('tipoRest', ['Carne', 'Pescado', 'Mixto', 'Vegano','Pasta']);
             $table->string('localidad');
             $table->string('ubicacion');
             $table->timestamps();
