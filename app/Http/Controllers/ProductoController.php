@@ -13,11 +13,6 @@ class ProductoController extends Controller
     {
         $productos = Producto::where('restaurante_id', $id_restaurante)->get();
 
-        $productos->transform(function ($producto) {
-            $producto->img = asset('upload/img/productos/' . basename($producto->img));
-            return $producto;
-        });
-
         if ($productos->isNotEmpty()) {
             return response()->json($productos);
         } else {
@@ -29,7 +24,7 @@ class ProductoController extends Controller
     {
         $validated = $request->validate([
             'nombreProducto'      => 'required|string|max:255',
-            'img'                 => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'img'          => 'nullable|url',
             'precio'              => 'nullable|max:255',
             'tiempoPreparacion'   => 'nullable|string|max:255',
             'descripcion'         => 'nullable|string|max:255',
@@ -40,12 +35,6 @@ class ProductoController extends Controller
 
         $ingredientes = $validated['ingredientes'];
         unset($validated['ingredientes']);
-
-        if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
-            $request->file('img')->move(public_path('upload/img/productos'), $filename);
-            $validated['img'] = 'upload/img/productos/' . $filename;
-        }
 
         $producto = Producto::create($validated);
 
@@ -61,7 +50,7 @@ class ProductoController extends Controller
             'data' => [
                 'id'                => $producto->id,
                 'nombreProducto'    => $producto->nombreProducto,
-                'img'               => asset($producto->img),
+                'img'               => $producto->img,
                 'precio'            => $producto->precio,
                 'tiempoPreparacion' => $producto->tiempoPreparacion,
                 'descripcion'       => $producto->descripcion,
@@ -83,19 +72,11 @@ class ProductoController extends Controller
 
         $validated = $request->validate([
             'nombreProducto'    => 'required|string|max:255',
-            'img'               => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'img'          => 'nullable|url',
             'precio'            => 'required|numeric|min:0',
             'descripcion'       => 'required|string|max:1000',
             'tiempoPreparacion' => 'required|string|max:255',
         ]);
-
-        if ($request->hasFile('img') && $request->file('img')->isValid()) {
-            $filename = Str::uuid() . '.' . $request->file('img')->getClientOriginalExtension();
-            $request->file('img')->move(public_path('upload/img/productos'), $filename);
-            $validated['img'] = 'upload/img/productos/' . $filename;
-        } else {
-            $validated['img'] = $producto->img;
-        }
 
         $producto->update($validated);
 
@@ -104,7 +85,7 @@ class ProductoController extends Controller
             'data'    => [
                 'id'                => $producto->id,
                 'nombreProducto'    => $producto->nombreProducto,
-                'img'               => asset($producto->img),
+                'img'               => $producto->img,
                 'precio'            => $producto->precio,
                 'tiempoPreparacion' => $producto->tiempoPreparacion,
                 'descripcion'       => $producto->descripcion,
