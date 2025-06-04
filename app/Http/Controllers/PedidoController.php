@@ -9,21 +9,27 @@ use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
+    // Función que sirve para añadir un producto al pedido
     public function aniadirProducto(Request $request)
     {
+        //Recibo todos los parametros atraves del body
         $productoId = $request->input('producto_id');
         $cantidad = $request->input('cantidad');
         $usuario_id = $request->input('usuario_id');
 
         $producto = Producto::findOrFail($productoId);
+        //Busco los pedidos que esten en proceso
         $pedido = Pedido::where('usuario_id', $usuario_id)
             ->where('estado', 'En proceso')
             ->first();
 
         if ($pedido) {
+            //Si existe un pedido en proceso compruebo que tenga producto
             $primerProducto = Pedido_producto::where('pedido_id', $pedido->id)->first();
 
             if ($primerProducto) {
+                //En caso de tener producto compruebo el id de su restaurante para evitar que se pueda añadir
+                //un producto con restaurante diferente
                 $productoExistente = Producto::find($primerProducto->producto_id);
 
                 if ($productoExistente->restaurante_id !== $producto->restaurante_id) {
@@ -36,7 +42,7 @@ class PedidoController extends Controller
             $pedido_producto = Pedido_producto::where('pedido_id', $pedido->id)
                 ->where('producto_id', $producto->id)
                 ->first();
-
+            //Aumento la cantidad si el pedido ya tiene ese producto guardado y si no lo añado
             if ($pedido_producto) {
                 $pedido_producto->cantidad += $cantidad;
                 $pedido_producto->save();
@@ -51,7 +57,7 @@ class PedidoController extends Controller
 
             return response()->json(['message' => 'Producto añadido al pedido'], 200);
         } else {
-
+            //Si el pedido no existia lo creo
             $pedido = new Pedido();
             $pedido->usuario_id = $usuario_id;
             $pedido->estado = 'En proceso';
@@ -68,7 +74,7 @@ class PedidoController extends Controller
         }
     }
 
-
+    //Función que elimina un producto del pedido
     public function eliminarProducto(Request $request)
     {
         $usuario_id = $request->input('usuario_id');
@@ -97,7 +103,7 @@ class PedidoController extends Controller
     }
 
 
-
+    //Función que recupera todos los pedidos de un usuario que no esten en proceso
     public function pedidosPorUsuario($usuarioId)
     {
         $pedidos = Pedido::with(['productos.restaurante'])
@@ -130,6 +136,7 @@ class PedidoController extends Controller
         return response()->json($resultado);
     }
 
+    //Función que sirve para pasar pedidos a pendientes y que cambien de la página carrito a la pagina de pedidos
     public function pasarAPendiente(Request $request)
     {
         $usuarioId = $request->input('usuario_id');
@@ -142,14 +149,13 @@ class PedidoController extends Controller
             return response()->json(['message' => 'No hay pedido en proceso para este usuario'], 404);
         }
 
-        // Cambiar el estado a 'Pendiente'
         $pedido->estado = 'Pendiente';
         $pedido->save();
 
         return response()->json(['message' => 'Estado del pedido cambiado a pendiente'], 200);
     }
 
-
+    //Función que sirve para mostrar el pedido que esta en proceso
     public function pedidoCarrito($usuarioId)
     {
         $pedido = Pedido::with(['productos.restaurante'])
@@ -184,7 +190,7 @@ class PedidoController extends Controller
     }
 
 
-
+    //Función que recupera todos los pedidos de un usuario que no esten en preparación
     public function pedidosPorRest($restauranteId)
     {
         $pedidos = Pedido::whereHas('productos', function ($query) use ($restauranteId) {
@@ -215,6 +221,7 @@ class PedidoController extends Controller
         return response()->json($resultado);
     }
 
+    //Función que permite al restaurante actualizar el estado de los pedidos
     public function actualizarEstado($id, Request $request)
     {
         $request->validate([

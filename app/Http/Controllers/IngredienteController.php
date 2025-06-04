@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class IngredienteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Función que muestra todos los ingredientes almacenados en la BD
      */
     public function index()
     {
@@ -20,7 +20,7 @@ class IngredienteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Función que almacena nuevo ingrediente en la BD
      */
     public function store(Request $request)
     {
@@ -37,27 +37,4 @@ class IngredienteController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Ingrediente $ingrediente)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Ingrediente $ingrediente)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Ingrediente $ingrediente)
-    {
-        //
-    }
 }

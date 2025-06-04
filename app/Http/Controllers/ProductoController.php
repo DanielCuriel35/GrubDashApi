@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 class ProductoController extends Controller
 {
+    //Función que saca todos los productos de un restaurante
     public function index($id_restaurante)
     {
         $productos = Producto::where('restaurante_id', $id_restaurante)->get();
@@ -20,6 +21,7 @@ class ProductoController extends Controller
         }
     }
 
+    //Función que almacena un nuevo producto en la BD
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -37,7 +39,7 @@ class ProductoController extends Controller
         unset($validated['ingredientes']);
 
         $producto = Producto::create($validated);
-
+        //Bucle que añade a la tabla pivot la relacion entre productos e ingredientes
         foreach ($ingredientes as $ingrediente_id) {
             DB::table('ingrediente_productos')->insert([
                 'producto_id'    => $producto->id,
@@ -58,13 +60,14 @@ class ProductoController extends Controller
             ],
         ], 201);
     }
-
+    //Función que muestra un producto con sus ingredientes por id
     public function show($id_producto)
     {
         $producto = Producto::with('ingredientes')->findOrFail($id_producto);
         return response()->json($producto);
     }
 
+    //Función que actualiza los datos de un producto
     public function update(Request $request, $id)
     {
         $producto = Producto::findOrFail($id);
@@ -93,6 +96,7 @@ class ProductoController extends Controller
         ]);
     }
 
+    //Función que borra un producto
     public function destroy($id)
     {
         $producto = Producto::find($id);

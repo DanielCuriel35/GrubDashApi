@@ -10,17 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    //Función que almacena los usuarios nuevos en la BD encriptando la password
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -64,6 +54,7 @@ class UsuarioController extends Controller
             'user' => $user
         ], 201);
     }
+    //Función que comprueba el logueo de el usuario y devuelve el token de sesión
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -86,54 +77,30 @@ class UsuarioController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $usuario) {}
-
-    /**
-     * Update the specified resource in storage.
-     */
-public function update(Request $request, $id)
-{
-    $usuario = User::findOrFail($id);
-
-    $validated = $request->validate([
-        'nombre'      => 'required|string|max:255',
-        'apellido'    => 'required|string|max:255',
-        'fecha_nac'   => 'required|date',
-        'username'    => 'required|string|max:255|unique:usuarios,username,' . $id,
-        'localidad'   => 'required|string|max:255',
-        'direccion'   => 'required|string|max:255',
-        'email'       => 'required|email|max:255|unique:usuarios,email,' . $id,
-        'password'    => 'nullable|string|min:10',
-    ]);
-
-    // Si se incluye una nueva contraseña, hashearla
-    if (!empty($validated['password'])) {
-        $validated['password'] = bcrypt($validated['password']);
-    } else {
-        unset($validated['password']); // Evita sobreescribir con NULL
-    }
-
-    $usuario->update($validated);
-
-    if ($usuario->restaurante) {
-        $usuario->load('restaurantes'); // Carga relación si es restaurante
-    }
-
-    return response()->json([
-        'message' => 'Usuario actualizado correctamente',
-        'user' => $usuario
-    ]);
-}
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $usuario)
+    //Función que actualiza los datos de un usuario
+    public function update(Request $request, $id)
     {
-        //
+        $usuario = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'nombre'      => 'required|string|max:255',
+            'apellido'    => 'required|string|max:255',
+            'fecha_nac'   => 'required|date',
+            'username'    => 'required|string|max:255|unique:usuarios,username,' . $id,
+            'localidad'   => 'required|string|max:255',
+            'direccion'   => 'required|string|max:255',
+            'email'       => 'required|email|max:255|unique:usuarios,email,' . $id
+        ]);
+
+        $usuario->update($validated);
+
+        if ($usuario->restaurante) {
+            $usuario->load('restaurantes');
+        }
+
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente',
+            'user' => $usuario
+        ]);
     }
 }

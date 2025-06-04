@@ -8,15 +8,7 @@ use Illuminate\Support\Str;
 
 class RestauranteController extends Controller
 {
-    public function index()
-    {
-        try {
-            return Restaurante::all();
-        } catch (\Throwable $th) {
-            return response()->json('Error:' . $th->getMessage(), 500);
-        }
-    }
-
+    //Función que almacena un restaurante nuevo en la BD
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -37,7 +29,7 @@ class RestauranteController extends Controller
         ], 201);
     }
 
-
+    //Función que muestra todos los restaurantes de una localidad
     public function show($localidad)
     {
         try {
@@ -48,6 +40,7 @@ class RestauranteController extends Controller
         }
     }
 
+    //Función que muestra el restaurnate de un usuario atraves de su id
     public function restUsuario($idUsuario)
     {
         try {
@@ -58,6 +51,7 @@ class RestauranteController extends Controller
         }
     }
 
+    //Función que actualiza los datos de un restaurante
     public function update(Request $request, $id)
     {
         $restaurante = Restaurante::findOrFail($id);
@@ -76,8 +70,4 @@ class RestauranteController extends Controller
         ]);
     }
 
-    public function destroy(Restaurante $restaurante)
-    {
-        //
-    }
 }
