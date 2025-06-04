@@ -10,7 +10,6 @@ class StripeController extends Controller
 {
     public function crearSesionCheckout(Request $request)
     {
-        // Configura tu clave secreta de Stripe
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $productos = $request->input('productos');
@@ -19,12 +18,12 @@ class StripeController extends Controller
         $lineItems = array_map(function ($producto) {
             return [
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => 'eur',
                     'product_data' => [
                         'name' => $producto['nombre'],
                         'images' => [$producto['img']],
                     ],
-                    'unit_amount' => intval($producto['precio_unitario'] * 100), // en centavos
+                    'unit_amount' => intval($producto['precio_unitario'] * 100),
                 ],
                 'quantity' => $producto['cantidad'],
             ];
@@ -35,8 +34,8 @@ class StripeController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => 'https://tusitio.com/success',
-            'cancel_url' => 'https://tusitio.com/cancel',
+            'success_url' => env('APP_URL') . '/pedidoUser?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => env('APP_URL') . '/carrito',
         ]);
 
         return response()->json(['id' => $session->id]);
