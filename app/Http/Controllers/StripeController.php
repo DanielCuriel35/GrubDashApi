@@ -34,7 +34,7 @@ class StripeController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => env('APP_URL') . '/pedidoUser?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => env('APP_URL') . '/pedidosUser?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => env('APP_URL') . '/carrito',
         ]);
 
