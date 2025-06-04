@@ -34,8 +34,8 @@ class StripeController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => env('APP_URL') . '/pedidosUser?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => env('APP_URL') . '/carrito',
+            'success_url' => 'https://grub-dash-angular.vercel.app/carrito?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'https://grub-dash-angular.vercel.app/carrito',
         ]);
 
         return response()->json(['id' => $session->id]);
