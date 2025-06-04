@@ -9,30 +9,6 @@ use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Pedido $pedido)
-    {
-        //
-    }
-
     public function aniadirProducto(Request $request)
     {
         $productoId = $request->input('producto_id');
@@ -44,9 +20,7 @@ class PedidoController extends Controller
             ->where('estado', 'En proceso')
             ->first();
 
-        // Si ya hay un pedido en proceso
         if ($pedido) {
-            // Obtener el primer producto del pedido
             $primerProducto = Pedido_producto::where('pedido_id', $pedido->id)->first();
 
             if ($primerProducto) {
@@ -59,7 +33,6 @@ class PedidoController extends Controller
                 }
             }
 
-            // Agregar o actualizar producto
             $pedido_producto = Pedido_producto::where('pedido_id', $pedido->id)
                 ->where('producto_id', $producto->id)
                 ->first();
@@ -78,7 +51,7 @@ class PedidoController extends Controller
 
             return response()->json(['message' => 'Producto añadido al pedido'], 200);
         } else {
-            // No hay pedido: se puede crear
+
             $pedido = new Pedido();
             $pedido->usuario_id = $usuario_id;
             $pedido->estado = 'En proceso';
@@ -161,7 +134,6 @@ class PedidoController extends Controller
     {
         $usuarioId = $request->input('usuario_id');
 
-        // Buscar el pedido "En proceso" del usuario
         $pedido = Pedido::where('usuario_id', $usuarioId)
             ->where('estado', 'En proceso')
             ->first();

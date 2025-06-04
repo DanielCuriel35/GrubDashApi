@@ -62,7 +62,6 @@ class ProductoController extends Controller
     public function show($id_producto)
     {
         $producto = Producto::with('ingredientes')->findOrFail($id_producto);
-        $producto->img = asset('upload/img/productos/' . basename($producto->img));
         return response()->json($producto);
     }
 
